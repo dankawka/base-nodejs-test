@@ -1,13 +1,34 @@
-import axios, { AxiosHeaders } from 'axios'
-import {
-  ICONIK_APP_ID,
-  ICONIK_AUTH_TOKEN,
-} from 'src/config/env-vars'
+import axios from "axios";
+import { ICONIK_APP_ID, ICONIK_AUTH_TOKEN } from "src/config/env-vars";
+import { IconikPostPayload, IconikSegment } from "./types";
 
-export const iconikClient =  axios.create({
-  baseURL: 'https://app.iconik.io/API/',
+export const iconikClient = axios.create({
+  baseURL: "https://app.iconik.io/API/",
   headers: {
-    'App-Id': ICONIK_APP_ID,
-    'Auth-Token': ICONIK_AUTH_TOKEN,
+    "App-Id": ICONIK_APP_ID,
+    "Auth-Token": ICONIK_AUTH_TOKEN,
   },
-})
+});
+
+export const createSegment = async (
+  assetId: string,
+  payload: IconikPostPayload
+) => {
+  try {
+    const url = `assets/v1/assets/${assetId}/segments/`;
+    const response = await iconikClient.post<IconikSegment>(url, payload);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteSegment = async (assetId: string, segmentId: string) => {
+  try {
+    const url = `assets/v1/assets/${assetId}/segments/${segmentId}?index_immediately=true`;
+    const response = await iconikClient.patch(url, { status: "DELETED" });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
