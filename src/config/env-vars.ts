@@ -12,6 +12,7 @@ export const {
   FRAME_IO_ROOT_ASSET_ID,
   FRAME_IO_WEBHOOK_SECRET,
   FRAME_IO_READ_TOKEN,
+  ICONIK_ALLOWED_SOURCE,
 } = object({
   AMQP_URL: string().required(),
   MONGO_URI: string().required(),
@@ -23,4 +24,5 @@ export const {
   FRAME_IO_ROOT_ASSET_ID: string().uuid().required(),
   FRAME_IO_WEBHOOK_SECRET: string().required(),
   FRAME_IO_READ_TOKEN: string().required(),
+  ICONIK_ALLOWED_SOURCE: string().required(),
 }).validateSync(process.env);

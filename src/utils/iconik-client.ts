@@ -20,6 +20,7 @@ export const createSegment = async (
     return response.data;
   } catch (error) {
     console.error(error);
+    throw new Error("Failed to create segment");
   }
 };
 
@@ -30,5 +31,6 @@ export const deleteSegment = async (assetId: string, segmentId: string) => {
     return response.data;
   } catch (error) {
     console.error(error);
+    throw new Error("Failed to delete segment");
   }
 };

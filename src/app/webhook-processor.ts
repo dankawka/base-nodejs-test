@@ -2,9 +2,12 @@ import { getComment } from "src/utils/frame-io-client";
 import { createSegment, deleteSegment } from "src/utils/iconik-client";
 import { FrameIoWebhookPayload } from "src/utils/iconik-custom-action-payload-schema";
 import { assetCollection, postsCollection } from "src/utils/mongo-db";
+import { frameLimiter, iconikLimiter } from "./queues";
 
 const addPost = async (payload: FrameIoWebhookPayload) => {
-  const comment = await getComment(payload.resource.id);
+  const comment = await frameLimiter.schedule(() =>
+    getComment(payload.resource.id)
+  );
 
   if (!comment) {
     console.error("Comment not found");
@@ -20,16 +23,18 @@ const addPost = async (payload: FrameIoWebhookPayload) => {
     return;
   }
 
-  const response = await createSegment(foundPair.iconikAssetId, {
-    drawing: null,
-    has_drawing: false,
-    metadata: {},
-    segment_color: "",
-    segment_text: comment.text,
-    segment_type: "COMMENT",
-    time_end_milliseconds: 0,
-    time_start_milliseconds: 0,
-  });
+  const response = await iconikLimiter.schedule(() =>
+    createSegment(foundPair.iconikAssetId, {
+      drawing: null,
+      has_drawing: false,
+      metadata: {},
+      segment_color: "",
+      segment_text: comment.text,
+      segment_type: "COMMENT",
+      time_end_milliseconds: 0,
+      time_start_milliseconds: 0,
+    })
+  );
 
   if (!response) {
     throw new Error("Failed to create segment");
@@ -52,9 +57,11 @@ const removePost = async (payload: FrameIoWebhookPayload) => {
     return;
   }
 
-  await deleteSegment(
-    foundCommentsPair.iconikAssetId,
-    foundCommentsPair.iconikSegmentId
+  await iconikLimiter.schedule(() =>
+    deleteSegment(
+      foundCommentsPair.iconikAssetId,
+      foundCommentsPair.iconikSegmentId
+    )
   );
   await postsCollection.deleteOne({ frameIoCommentId: payload.resource.id });
 };
