@@ -1,10 +1,9 @@
 import { getComment } from "src/utils/frame-io-client";
 import { createSegment, deleteSegment } from "src/utils/iconik-client";
 import { FrameIoWebhookPayload } from "src/utils/iconik-custom-action-payload-schema";
-import { postsCollection } from "src/utils/mongo-db";
+import { assetCollection, postsCollection } from "src/utils/mongo-db";
 
 const addPost = async (payload: FrameIoWebhookPayload) => {
-  const assetId = "5e2b5444-e395-11ef-9cf6-1214703ca5ea";
   const comment = await getComment(payload.resource.id);
 
   if (!comment) {
@@ -12,7 +11,16 @@ const addPost = async (payload: FrameIoWebhookPayload) => {
     return;
   }
 
-  const response = await createSegment(assetId, {
+  const foundPair = await assetCollection.findOne({
+    frameIoAssetId: comment.asset_id,
+  });
+
+  if (!foundPair) {
+    console.error("Found no matching iconik segment, can't do anything");
+    return;
+  }
+
+  const response = await createSegment(foundPair.iconikAssetId, {
     drawing: null,
     has_drawing: false,
     metadata: {},
@@ -29,23 +37,25 @@ const addPost = async (payload: FrameIoWebhookPayload) => {
 
   await postsCollection.insertOne({
     frameIoCommentId: comment.id,
+    iconikAssetId: foundPair.iconikAssetId,
     iconikSegmentId: response.id,
   });
 };
 
 const removePost = async (payload: FrameIoWebhookPayload) => {
-  const assetId = "5e2b5444-e395-11ef-9cf6-1214703ca5ea";
-
-  const foundPair = await postsCollection.findOne({
+  const foundCommentsPair = await postsCollection.findOne({
     frameIoCommentId: payload.resource.id,
   });
 
-  if (!foundPair) {
+  if (!foundCommentsPair) {
     console.error("Found no matching iconik segment, can't do anything");
     return;
   }
 
-  await deleteSegment(assetId, foundPair.iconikSegmentId);
+  await deleteSegment(
+    foundCommentsPair.iconikAssetId,
+    foundCommentsPair.iconikSegmentId
+  );
   await postsCollection.deleteOne({ frameIoCommentId: payload.resource.id });
 };
 
