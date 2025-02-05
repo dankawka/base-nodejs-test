@@ -1,5 +1,5 @@
-import 'dotenv/config'
-import { object, string } from 'yup'
+import "dotenv/config";
+import { object, string } from "yup";
 
 export const {
   AMQP_URL,
@@ -10,13 +10,17 @@ export const {
   ICONIK_CUSTOM_ACTION_ID,
   FRAME_IO_ACCESS_TOKEN,
   FRAME_IO_ROOT_ASSET_ID,
+  FRAME_IO_WEBHOOK_SECRET,
+  FRAME_IO_READ_TOKEN,
 } = object({
   AMQP_URL: string().required(),
   MONGO_URI: string().required(),
   API_URL: string().url().required(),
-  ICONIK_APP_ID: string().uuid().required(),
-  ICONIK_AUTH_TOKEN: string().required(),
-  ICONIK_CUSTOM_ACTION_ID: string().uuid(),
+  ICONIK_APP_ID: string(),
+  ICONIK_AUTH_TOKEN: string(),
+  ICONIK_CUSTOM_ACTION_ID: string(),
   FRAME_IO_ACCESS_TOKEN: string().required(),
   FRAME_IO_ROOT_ASSET_ID: string().uuid().required(),
-}).validateSync(process.env)
+  FRAME_IO_WEBHOOK_SECRET: string().required(),
+  FRAME_IO_READ_TOKEN: string().required(),
+}).validateSync(process.env);
