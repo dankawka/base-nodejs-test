@@ -1,4 +1,4 @@
-import { API_URL, ICONIK_APP_ID } from "src/config/env-vars.js";
+import { API_URL, ICONIK_APP_ID } from "../config/env-vars.js";
 
 export const ICONIK_CUSTOM_ACTION_URL_PATH = "/iconik/custom-action";
 

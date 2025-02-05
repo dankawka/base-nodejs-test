@@ -1,21 +1,21 @@
 import express from "express";
-import { WEBHOOK_ROUTE_POSTS } from "src/config/config";
+import { WEBHOOK_ROUTE_POSTS } from "../config/config";
 import {
   FRAME_IO_WEBHOOK_SECRET,
   ICONIK_ALLOWED_SOURCE,
-} from "src/config/env-vars";
-import { ICONIK_CUSTOM_ACTION_URL_PATH } from "src/config/iconik-custom-action.js";
+} from "../config/env-vars";
+import { ICONIK_CUSTOM_ACTION_URL_PATH } from "../config/iconik-custom-action.js";
 import {
   amqpChannel,
   CUSTOM_ACTION_MESSAGE_TYPE,
   TOPIC_NAME,
-} from "src/utils/amqp.js";
+} from "../utils/amqp.js";
 import {
   frameIoWebhookHeadersSchema,
   frameIoWebhookSchema,
   iconikCustomActionPayloadSchema,
-} from "src/utils/iconik-custom-action-payload-schema.js";
-import { isSignatureValid } from "src/utils/signature";
+} from "../utils/iconik-custom-action-payload-schema.js";
+import { isSignatureValid } from "../utils/signature";
 import { ValidationError } from "yup";
 import { processWebhook } from "./webhook-processor";
 

@@ -1,9 +1,6 @@
 import axios from "axios";
-import { Comment } from "src/utils/types";
-import {
-  FRAME_IO_ACCESS_TOKEN,
-  FRAME_IO_READ_TOKEN,
-} from "src/config/env-vars";
+import { Comment } from "../utils/types";
+import { FRAME_IO_ACCESS_TOKEN, FRAME_IO_READ_TOKEN } from "../config/env-vars";
 
 export const frameIoWriteClient = axios.create({
   baseURL: "https://api.frame.io/v2/",
@@ -28,4 +25,8 @@ export const getComment = async (commentId: string) => {
   } catch (error) {
     console.error("Failed to get comment");
   }
+};
+
+export const FrameClient = {
+  getComment,
 };

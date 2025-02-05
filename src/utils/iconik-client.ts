@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICONIK_APP_ID, ICONIK_AUTH_TOKEN } from "src/config/env-vars";
+import { ICONIK_APP_ID, ICONIK_AUTH_TOKEN } from "../config/env-vars";
 import { IconikPostPayload, IconikSegment } from "./types";
 
 export const iconikClient = axios.create({
@@ -10,10 +10,7 @@ export const iconikClient = axios.create({
   },
 });
 
-export const createSegment = async (
-  assetId: string,
-  payload: IconikPostPayload,
-) => {
+const createSegment = async (assetId: string, payload: IconikPostPayload) => {
   try {
     const url = `assets/v1/assets/${assetId}/segments/`;
     const response = await iconikClient.post<IconikSegment>(url, payload);
@@ -24,7 +21,7 @@ export const createSegment = async (
   }
 };
 
-export const deleteSegment = async (assetId: string, segmentId: string) => {
+const deleteSegment = async (assetId: string, segmentId: string) => {
   try {
     const url = `assets/v1/assets/${assetId}/segments/${segmentId}?index_immediately=true`;
     const response = await iconikClient.patch(url, { status: "DELETED" });
@@ -35,7 +32,7 @@ export const deleteSegment = async (assetId: string, segmentId: string) => {
   }
 };
 
-export const updateSegment = async (
+const updateSegment = async (
   assetId: string,
   segmentId: string,
   payload: IconikPostPayload,
@@ -48,4 +45,10 @@ export const updateSegment = async (
     console.error(error);
     throw new Error("Failed to create segment");
   }
+};
+
+export const IconikClient = {
+  createSegment,
+  deleteSegment,
+  updateSegment,
 };

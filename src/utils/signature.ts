@@ -1,6 +1,4 @@
 import crypto, { sign } from "crypto";
-import { IncomingHttpHeaders } from "http";
-import { frameIoWebhookHeadersSchema } from "./iconik-custom-action-payload-schema";
 
 // Define types for the payload structure
 interface WebhookPayload {

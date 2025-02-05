@@ -1,6 +1,6 @@
 import amqplib from "amqplib";
 
-import { AMQP_URL } from "src/config/env-vars.js";
+import { AMQP_URL } from "../config/env-vars.js";
 
 export const TOPIC_NAME = "base-nodejs-test";
 

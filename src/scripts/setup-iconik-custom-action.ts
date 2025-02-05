@@ -1,8 +1,8 @@
 import * as fs from "node:fs";
 
-import { iconikCustomActionConfig } from "src/config/iconik-custom-action.js";
-import { ICONIK_CUSTOM_ACTION_ID } from "src/config/env-vars.js";
-import { iconikClient } from "src/utils/iconik-client.js";
+import { iconikCustomActionConfig } from "../config/iconik-custom-action.js";
+import { ICONIK_CUSTOM_ACTION_ID } from "../config/env-vars.js";
+import { iconikClient } from "../utils/iconik-client.js";
 
 if (ICONIK_CUSTOM_ACTION_ID) {
   await iconikClient.patch(

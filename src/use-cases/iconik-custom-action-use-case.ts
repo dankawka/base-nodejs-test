@@ -1,8 +1,8 @@
-import { FRAME_IO_ROOT_ASSET_ID } from "src/config/env-vars.js";
-import { frameIoWriteClient } from "src/utils/frame-io-client";
-import { iconikClient } from "src/utils/iconik-client.js";
-import { IconikCustomActionPayload } from "src/utils/iconik-custom-action-payload-schema.js";
-import { assetCollection } from "src/utils/mongo-db.js";
+import { FRAME_IO_ROOT_ASSET_ID } from "../config/env-vars.js";
+import { frameIoWriteClient } from "../utils/frame-io-client";
+import { iconikClient } from "../utils/iconik-client.js";
+import { IconikCustomActionPayload } from "../utils/iconik-custom-action-payload-schema.js";
+import { getAssetCollection } from "../utils/mongo-db.js";
 
 export async function iconikCustomActionUseCase(
   payload: IconikCustomActionPayload,
@@ -39,7 +39,7 @@ export async function iconikCustomActionUseCase(
       },
     );
 
-    await assetCollection.insertOne({
+    await getAssetCollection().insertOne({
       iconikAssetId: iconikAsset.id,
       frameIoAssetId: frameIoAsset.id,
     });
