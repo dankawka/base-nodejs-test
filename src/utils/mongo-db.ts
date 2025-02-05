@@ -12,4 +12,5 @@ export const postsCollection = db.collection<{
   frameIoCommentId: string;
   iconikAssetId: string;
   iconikSegmentId: string;
+  lastUpdated: number;
 }>("posts");

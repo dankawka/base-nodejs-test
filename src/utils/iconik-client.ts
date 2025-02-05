@@ -34,3 +34,18 @@ export const deleteSegment = async (assetId: string, segmentId: string) => {
     throw new Error("Failed to delete segment");
   }
 };
+
+export const updateSegment = async (
+  assetId: string,
+  segmentId: string,
+  payload: IconikPostPayload
+) => {
+  try {
+    const url = `assets/v1/assets/${assetId}/segments/${segmentId}?index_immediately=true`;
+    const response = await iconikClient.patch<IconikSegment>(url, payload);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to create segment");
+  }
+};

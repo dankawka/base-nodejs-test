@@ -11,6 +11,7 @@ import {
   TOPIC_NAME,
 } from "src/utils/amqp.js";
 import {
+  frameIoWebhookHeadersSchema,
   frameIoWebhookSchema,
   iconikCustomActionPayloadSchema,
 } from "src/utils/iconik-custom-action-payload-schema.js";
@@ -50,8 +51,17 @@ apiRouter.post(WEBHOOK_ROUTE_POSTS, async (req, res) => {
   console.log("Received webhook");
   try {
     const payload = await frameIoWebhookSchema.validate(req.body);
+
+    const validHeaders = await frameIoWebhookHeadersSchema.validate(
+      req.headers
+    );
+
+    const signature = validHeaders["x-frameio-signature"];
+    const timestamp = parseInt(validHeaders["x-frameio-request-timestamp"]);
+
     const isValid = await isSignatureValid(
-      req.headers,
+      signature,
+      timestamp,
       FRAME_IO_WEBHOOK_SECRET,
       payload
     );
@@ -63,7 +73,7 @@ apiRouter.post(WEBHOOK_ROUTE_POSTS, async (req, res) => {
     }
 
     console.log("Webhook is valid, signature is valid");
-    await processWebhook(payload);
+    await processWebhook(payload, timestamp);
     res.status(202).json({ status: "Accepted" });
   } catch (error) {
     console.error(error);

@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto, { sign } from "crypto";
 import { IncomingHttpHeaders } from "http";
 import { frameIoWebhookHeadersSchema } from "./iconik-custom-action-payload-schema";
 
@@ -12,14 +12,12 @@ interface WebhookPayload {
 }
 
 export const isSignatureValid = async (
-  headers: IncomingHttpHeaders,
+  signature: string,
+  timestamp: number,
   secret: string,
   body: WebhookPayload
 ): Promise<boolean> => {
-  const validHeaders = await frameIoWebhookHeadersSchema.validate(headers);
-
-  const signature = validHeaders["x-frameio-signature"];
-  const timestamp = parseInt(validHeaders["x-frameio-request-timestamp"]);
+  
 
   const currentTimeUTC: number = new Date().getTime();
   const currentTimestamp: number = currentTimeUTC / 1000;

@@ -23,7 +23,9 @@ export const frameIoWebhookSchema = object({
   team: object({
     id: string().uuid().required(),
   }).required(),
-  type: string().oneOf(["comment.created", "comment.deleted"]).required(),
+  type: string()
+    .oneOf(["comment.created", "comment.deleted", "comment.updated"])
+    .required(),
   user: object({
     id: string().uuid().required(),
   }).required(),
