@@ -9,13 +9,13 @@ await amqpChannel.consume(CUSTOM_ACTION_QUEUE_NAME, async (message) => {
 
   console.log("Processing message from queue", CUSTOM_ACTION_QUEUE_NAME);
   const payload = await iconikCustomActionPayloadSchema.validate(
-    message!.content.toString()
+    message!.content.toString(),
   );
 
   console.log(
     "Processing message from queue",
     CUSTOM_ACTION_QUEUE_NAME,
-    " payload is valid"
+    " payload is valid",
   );
   await iconikCustomActionUseCase(payload);
   amqpChannel.ack(message);

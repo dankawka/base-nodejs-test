@@ -34,7 +34,7 @@ apiRouter.post(ICONIK_CUSTOM_ACTION_URL_PATH, async (req, res) => {
     amqpChannel.publish(
       TOPIC_NAME,
       CUSTOM_ACTION_MESSAGE_TYPE,
-      Buffer.from(JSON.stringify(payload))
+      Buffer.from(JSON.stringify(payload)),
     );
     res.status(202).json({ status: "Accepted" });
   } catch (error) {
@@ -53,7 +53,7 @@ apiRouter.post(WEBHOOK_ROUTE_POSTS, async (req, res) => {
     const payload = await frameIoWebhookSchema.validate(req.body);
 
     const validHeaders = await frameIoWebhookHeadersSchema.validate(
-      req.headers
+      req.headers,
     );
 
     const signature = validHeaders["x-frameio-signature"];
@@ -63,7 +63,7 @@ apiRouter.post(WEBHOOK_ROUTE_POSTS, async (req, res) => {
       signature,
       timestamp,
       FRAME_IO_WEBHOOK_SECRET,
-      payload
+      payload,
     );
 
     if (!isValid) {

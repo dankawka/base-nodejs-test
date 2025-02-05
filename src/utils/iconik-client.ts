@@ -12,7 +12,7 @@ export const iconikClient = axios.create({
 
 export const createSegment = async (
   assetId: string,
-  payload: IconikPostPayload
+  payload: IconikPostPayload,
 ) => {
   try {
     const url = `assets/v1/assets/${assetId}/segments/`;
@@ -38,7 +38,7 @@ export const deleteSegment = async (assetId: string, segmentId: string) => {
 export const updateSegment = async (
   assetId: string,
   segmentId: string,
-  payload: IconikPostPayload
+  payload: IconikPostPayload,
 ) => {
   try {
     const url = `assets/v1/assets/${assetId}/segments/${segmentId}?index_immediately=true`;

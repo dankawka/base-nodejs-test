@@ -8,12 +8,9 @@ import { FrameIoWebhookPayload } from "src/utils/iconik-custom-action-payload-sc
 import { assetCollection, postsCollection } from "src/utils/mongo-db";
 import { frameLimiter, iconikLimiter } from "./queues";
 
-const addPost = async (
-  payload: FrameIoWebhookPayload,
-  timestamp: number
-) => {
+const addPost = async (payload: FrameIoWebhookPayload, timestamp: number) => {
   const comment = await frameLimiter.schedule(() =>
-    getComment(payload.resource.id)
+    getComment(payload.resource.id),
   );
 
   if (!comment) {
@@ -40,7 +37,7 @@ const addPost = async (
       segment_type: "COMMENT",
       time_end_milliseconds: 0,
       time_start_milliseconds: 0,
-    })
+    }),
   );
 
   if (!response) {
@@ -66,17 +63,14 @@ const removePost = async (payload: FrameIoWebhookPayload) => {
   }
 
   await iconikLimiter.schedule(() =>
-    deleteSegment(
-      foundPostsPair.iconikAssetId,
-      foundPostsPair.iconikSegmentId
-    )
+    deleteSegment(foundPostsPair.iconikAssetId, foundPostsPair.iconikSegmentId),
   );
   await postsCollection.deleteOne({ frameIoCommentId: payload.resource.id });
 };
 
 const updatePost = async (
   payload: FrameIoWebhookPayload,
-  timestamp: number
+  timestamp: number,
 ) => {
   const postsPair = await postsCollection.findOne({
     frameIoCommentId: payload.resource.id,
@@ -93,7 +87,7 @@ const updatePost = async (
   }
 
   const comment = await frameLimiter.schedule(() =>
-    getComment(payload.resource.id)
+    getComment(payload.resource.id),
   );
 
   if (!comment) {
@@ -120,7 +114,7 @@ const updatePost = async (
       segment_type: "COMMENT",
       time_end_milliseconds: 0,
       time_start_milliseconds: 0,
-    })
+    }),
   );
 
   if (!response) {
@@ -135,13 +129,13 @@ const updatePost = async (
       $set: {
         lastUpdated: timestamp,
       },
-    }
+    },
   );
 };
 
 export const processWebhook = async (
   payload: FrameIoWebhookPayload,
-  timestamp: number
+  timestamp: number,
 ) => {
   const strategyMap = {
     "comment.created": addPost,

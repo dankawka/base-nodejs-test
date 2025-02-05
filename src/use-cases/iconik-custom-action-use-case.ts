@@ -5,13 +5,13 @@ import { IconikCustomActionPayload } from "src/utils/iconik-custom-action-payloa
 import { assetCollection } from "src/utils/mongo-db.js";
 
 export async function iconikCustomActionUseCase(
-  payload: IconikCustomActionPayload
+  payload: IconikCustomActionPayload,
 ) {
   try {
     const assetId = payload.asset_ids[0];
 
     const { data: iconikAsset } = await iconikClient.get(
-      `/assets/v1/assets/${assetId}`
+      `/assets/v1/assets/${assetId}`,
     );
 
     const proxiesResponse = await iconikClient.get(
@@ -22,7 +22,7 @@ export async function iconikCustomActionUseCase(
           generate_signed_url: true,
           content_disposition: "attachment",
         },
-      }
+      },
     );
 
     const proxy = proxiesResponse.data.objects[0];
@@ -36,7 +36,7 @@ export async function iconikCustomActionUseCase(
         source: {
           url: proxy.url,
         },
-      }
+      },
     );
 
     await assetCollection.insertOne({

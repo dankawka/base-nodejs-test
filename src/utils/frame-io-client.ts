@@ -22,7 +22,7 @@ export const frameIoReadClient = axios.create({
 export const getComment = async (commentId: string) => {
   try {
     const response = await frameIoReadClient.get<Comment>(
-      `/comments/${commentId}`
+      `/comments/${commentId}`,
     );
     return response.data;
   } catch (error) {

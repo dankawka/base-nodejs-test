@@ -15,10 +15,8 @@ export const isSignatureValid = async (
   signature: string,
   timestamp: number,
   secret: string,
-  body: WebhookPayload
+  body: WebhookPayload,
 ): Promise<boolean> => {
-  
-
   const currentTimeUTC: number = new Date().getTime();
   const currentTimestamp: number = currentTimeUTC / 1000;
   const minutes: number = 5;

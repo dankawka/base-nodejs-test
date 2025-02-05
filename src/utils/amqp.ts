@@ -16,5 +16,5 @@ await amqpChannel.assertQueue(CUSTOM_ACTION_QUEUE_NAME);
 await amqpChannel.bindQueue(
   CUSTOM_ACTION_QUEUE_NAME,
   TOPIC_NAME,
-  CUSTOM_ACTION_MESSAGE_TYPE
+  CUSTOM_ACTION_MESSAGE_TYPE,
 );

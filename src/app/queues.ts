@@ -20,7 +20,7 @@ iconikLimiter.on("failed", async (error, jobInfo) => {
   }
 });
 iconikLimiter.on("retry", (error, jobInfo) =>
-  console.log(`Now retrying ${jobInfo.options.id}`)
+  console.log(`Now retrying ${jobInfo.options.id}`),
 );
 
 export const frameLimiter = new Bottleneck({
@@ -43,5 +43,5 @@ frameLimiter.on("failed", async (error, jobInfo) => {
   }
 });
 frameLimiter.on("retry", (error, jobInfo) =>
-  console.log(`Now retrying ${jobInfo.options.id}`)
+  console.log(`Now retrying ${jobInfo.options.id}`),
 );

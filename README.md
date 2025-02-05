@@ -27,6 +27,7 @@ Please fork this repo and begin your work locally.
 ## setup
 
 Copy the `.env.example` file to `.env` and install the dependencies.
+
 ```bash
 cp .env.example .env
 npm install
@@ -39,6 +40,7 @@ Create new Iconik app and generate a new auth token.
 Add the app's id and token to the `.env` file.
 
 Establish a secure tunnel to the local server using `pinggy.io` or similar service.
+
 ```bash
 ssh -p 443 -R0:127.0.0.1:3000 a.pinggy.io
 ```
@@ -46,6 +48,7 @@ ssh -p 443 -R0:127.0.0.1:3000 a.pinggy.io
 Add the tunnel URL to the `.env` file.
 
 Run the setup script to create the necessary assets in Iconik.
+
 ```bash
 npm run setup
 ```
@@ -53,10 +56,13 @@ npm run setup
 ## run
 
 Start the server.
+
 ```bash
 npm start
 ```
+
 or using Docker
+
 ```bash
 docker compose up
 ```
@@ -66,7 +72,6 @@ docker compose up
 Upload a media file to Iconik and run the 'Base NodeJS Test' custom action on the asset.
 You should see the new asset in the Frame.io project.
 
-
 ## scope of work
 
 Create a new webhook in Frame.io that triggers on all comment-related events.
@@ -74,6 +79,7 @@ In the application implement a new webhook handler that syncs the comments to th
 
 Focus on the core functionality, the rest is optional but appreciated.
 Example additional topics to consider:
+
 - Request validation (checking the Frame.io signature, your own solution for Iconik)
 - Rate limits (Frame.io and Iconik)
 - Preventing race conditions

@@ -11,7 +11,7 @@ const port = 3000;
 app.use(
   morgan("[:date[iso]] Started :method :url for :remote-addr", {
     immediate: true,
-  })
+  }),
 );
 app.use(bodyParser.json());
 app.use("/api", apiRouter);
